@@ -10,6 +10,7 @@
 
 > **A self-improving skill system for Claude Code.**
 > Tell it what to get better at. It finds the skill and installs it.
+> Dispatch a team of agents to work on your task in parallel.
 
 ---
 
@@ -35,6 +36,34 @@
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
 ```
+
+## Team Mode
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                                                              │
+│   $ claude                                                   │
+│                                                              │
+│   > /team build a dashboard with auth and analytics          │
+│                                                              │
+│   Dispatching team...                                        │
+│                                                              │
+│   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐       │
+│   │Researcher│  │Architect│  │ Builder │  │Reviewer │       │
+│   │  ⣾ ...  │  │  ⣾ ...  │  │  ⣾ ...  │  │ waiting │       │
+│   └─────────┘  └─────────┘  └─────────┘  └─────────┘       │
+│                                                              │
+│   ✓ Researcher: found existing components & tech stack       │
+│   ✓ Architect: designed page layout & data flow              │
+│   ✓ Builder: implemented dashboard with 4 widget panels      │
+│   ✓ Reviewer: verified auth guards & accessibility           │
+│                                                              │
+│   All agents complete. Dashboard ready at src/dashboard.tsx  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+`/team` breaks your task into subtasks and spawns **2-5 specialized agents in parallel** — researcher, architect, builder, reviewer, designer — each working simultaneously. Like a dev team, not a solo engineer.
 
 ## How it works
 
@@ -66,6 +95,7 @@
 │ COMMAND                        │ DESCRIPTION                   │
 ├────────────────────────────────┼───────────────────────────────┤
 │ /learn [topic]                 │ Find & install a new skill    │
+│ /team [task]                   │ Parallel multi-agent dispatch │
 │ /skills list                   │ Show all installed skills     │
 │ /skills info [name]            │ Inspect a specific skill      │
 │ /skills remove [name]          │ Uninstall a skill             │
@@ -86,6 +116,12 @@
 
 # Get better at database design
 > /learn sql and database optimization
+
+# Dispatch a team to build a landing page
+> /team build a landing page for my SaaS product
+
+# Have multiple agents review your code
+> /team review this PR for bugs, security, and performance
 
 # See what you've learned
 > /skills list
@@ -119,6 +155,8 @@ Skills are markdown files that live in `~/.claude/skills/<name>/SKILL.md`. Claud
 ```
 ~/.claude/skills/
 ├── learn/            ← finds & installs new skills
+│   └── SKILL.md
+├── team/             ← parallel multi-agent dispatcher
 │   └── SKILL.md
 ├── skills/           ← manages installed skills
 │   └── SKILL.md
